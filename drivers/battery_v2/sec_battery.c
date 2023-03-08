@@ -4679,10 +4679,7 @@ skip_current_monitor:
 #if defined(CONFIG_BATTERY_AGE_FORECAST)
 #if defined(CONFIG_BATTERY_AGE_FORECAST_DETACHABLE)
 		", Cycle(%dw)"
-#else
 		", Cycle(%d)"
-#endif
-#endif
 		 "\n", __func__,
 		 sec_bat_status_str[battery->status],
 		 sec_bat_charging_mode_str[battery->charging_mode],

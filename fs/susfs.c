@@ -70,7 +70,7 @@ void susfs_set_i_state_on_external_dir(void __user **user_info) {
 	
 	if (info.cmd == CMD_SUSFS_SET_ANDROID_DATA_ROOT_PATH) {
 		spin_lock(&inode->i_lock);
-		set_bit(AS_FLAGS_ANDROID_DATA_ROOT_DIR, &inode->i_mapping->flags);
+		set_bit(AS_FLAGS_ANDROID_DATA_ROOT_DIR, &inode->i_state);
 		spin_unlock(&inode->i_lock);
 		strncpy(android_data_path.target_pathname, info.target_pathname, SUSFS_MAX_LEN_PATHNAME-1);
 		android_data_path.is_inited = true;

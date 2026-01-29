@@ -32,6 +32,14 @@ jobs:
           mkdir toolchain
           tar -xzf weebx-clang.tar.gz -C toolchain --strip-components=1
           rm -rf weebx-clang.tar.gz
+      
+      - name: Apply KernelSU Next SUSFS patch
+        run: |
+          cd Patches
+          cp * ../KernelSU-Next/
+          cd ..
+          cd KernelSU-Next/
+          patch -p1 < ksun-susfs-2.0.0.patch
 
       - name: Build kernel
         run: |

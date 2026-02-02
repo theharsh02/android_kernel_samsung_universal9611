@@ -1,8 +1,8 @@
 diff --git a/kernel/Kbuild b/kernel/Kbuild
-index 3f455e1132..906634310a 100644
+index de54c3cd..5a1801b2 100644
 --- a/kernel/Kbuild
 +++ b/kernel/Kbuild
-@@ -262,4 +262,14 @@ ccflags-y += -DEXPECTED_MANAGER_HASH=\"$(KSU_NEXT_MANAGER_HASH)\"
+@@ -263,4 +263,14 @@ ccflags-y += -DEXPECTED_MANAGER_HASH=\"$(KSU_NEXT_MANAGER_HASH)\"
  ccflags-y += -Wno-strict-prototypes -Wno-int-conversion -Wno-gcc-compat -Wno-missing-prototypes
  ccflags-y += -Wno-declaration-after-statement -Wno-unused-function -Wno-unused-variable
  
@@ -18,7 +18,7 @@ index 3f455e1132..906634310a 100644
 +
  # Keep a new line here!! Because someone may append config
 diff --git a/kernel/Kconfig b/kernel/Kconfig
-index b382a63de3..c374f22641 100644
+index b382a63d..c374f226 100644
 --- a/kernel/Kconfig
 +++ b/kernel/Kconfig
 @@ -42,4 +42,102 @@ config KSU_KPROBES_HOOK
@@ -125,7 +125,7 @@ index b382a63de3..c374f22641 100644
 +
  endmenu
 diff --git a/kernel/kernel_umount.c b/kernel/kernel_umount.c
-index e4d1e60c1f..2206211fec 100644
+index e4d1e60c..2206211f 100644
 --- a/kernel/kernel_umount.c
 +++ b/kernel/kernel_umount.c
 @@ -22,7 +22,11 @@
@@ -192,7 +192,7 @@ index e4d1e60c1f..2206211fec 100644
  void ksu_kernel_umount_init(void)
  {
 diff --git a/kernel/kernel_umount.h b/kernel/kernel_umount.h
-index e544895574..623976d99e 100644
+index e5448955..623976d9 100644
 --- a/kernel/kernel_umount.h
 +++ b/kernel/kernel_umount.h
 @@ -8,8 +8,10 @@
@@ -209,7 +209,7 @@ index e544895574..623976d99e 100644
  // for the umount list
  struct mount_entry {
 diff --git a/kernel/ksu.c b/kernel/ksu.c
-index 7742dad6c3..2fc186acf7 100644
+index 7742dad6..2fc186ac 100644
 --- a/kernel/ksu.c
 +++ b/kernel/ksu.c
 @@ -13,6 +13,9 @@
@@ -234,7 +234,7 @@ index 7742dad6c3..2fc186acf7 100644
  
  	ksu_file_wrapper_init();
 diff --git a/kernel/selinux/rules.c b/kernel/selinux/rules.c
-index f216fe399b..65caadd678 100644
+index f216fe39..65caadd6 100644
 --- a/kernel/selinux/rules.c
 +++ b/kernel/selinux/rules.c
 @@ -133,6 +133,15 @@ void apply_kernelsu_rules()
@@ -254,12 +254,12 @@ index f216fe399b..65caadd678 100644
      mutex_unlock(&ksu_rules);
  }
 diff --git a/kernel/selinux/selinux.c b/kernel/selinux/selinux.c
-index 89d46b00e4..8dd92b4e86 100644
+index c5e415f9..a9a56444 100644
 --- a/kernel/selinux/selinux.c
 +++ b/kernel/selinux/selinux.c
-@@ -194,3 +194,99 @@ u32 ksu_get_ksu_file_sid()
-     }
-     return ksu_file_sid;
+@@ -244,3 +244,99 @@ bool is_init(const struct cred *cred)
+ {
+     return is_sid_match(cred, cached_init_sid, INIT_CONTEXT);
  }
 +
 +#ifdef CONFIG_KSU_SUSFS
@@ -358,10 +358,10 @@ index 89d46b00e4..8dd92b4e86 100644
 +}
 +#endif // #ifdef CONFIG_KSU_SUSFS
 diff --git a/kernel/selinux/selinux.h b/kernel/selinux/selinux.h
-index 84fda9d53a..528aa5b14b 100644
+index 214c964b..9aa718fe 100644
 --- a/kernel/selinux/selinux.h
 +++ b/kernel/selinux/selinux.h
-@@ -60,4 +60,17 @@ int handle_sepolicy(unsigned long arg3, void __user *arg4);
+@@ -62,4 +62,17 @@ int handle_sepolicy(unsigned long arg3, void __user *arg4);
  
  void setup_ksu_cred();
  
@@ -380,7 +380,7 @@ index 84fda9d53a..528aa5b14b 100644
 +
  #endif
 diff --git a/kernel/setuid_hook.c b/kernel/setuid_hook.c
-index 49915092cc..f9e26a12c9 100644
+index 49915092..f9e26a12 100644
 --- a/kernel/setuid_hook.c
 +++ b/kernel/setuid_hook.c
 @@ -25,6 +25,9 @@
@@ -485,7 +485,7 @@ index 49915092cc..f9e26a12c9 100644
      return 0;
  }
 diff --git a/kernel/supercalls.c b/kernel/supercalls.c
-index c7eb13f89c..505c2117ec 100644
+index c7eb13f8..77290b31 100644
 --- a/kernel/supercalls.c
 +++ b/kernel/supercalls.c
 @@ -12,6 +12,11 @@
@@ -515,9 +515,9 @@ index c7eb13f89c..505c2117ec 100644
  			boot_complete_lock = true;
  			pr_info("boot_complete triggered\n");
  			on_boot_completed();
-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-+            susfs_is_boot_completed_triggered = true;
-+#endif // #ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
++#ifdef CONFIG_KSU_SUSFS
++            susfs_start_sdcard_monitor_fn();
++#endif // #ifdef CONFIG_KSU_SUSFS
  		}
  		break;
  	}
@@ -741,3 +741,6 @@ index c7eb13f89c..505c2117ec 100644
  }
  
  // IOCTL dispatcher
+-- 
+2.52.0
+

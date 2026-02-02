@@ -136,7 +136,7 @@ def main():
     copy_file(f'{output_dir}/arch/arm64/boot/Image', f'{anykernel3_dir}/Image')
     copy_file(f'{output_dir}/arch/arm64/boot/dtbo-{args.target}.img', f'{anykernel3_dir}/dtbo.img')
     copy_file(f'{output_dir}/arch/arm64/boot/exynos9611.dtb', f'{anykernel3_dir}/dtb')
-    zip_filename = 'AOSP_{}_{}.zip'.format(
+    zip_filename = 'AOSP_{}_{}_SUSFS.zip'.format(
         args.target, datetime.today().strftime('%Y-%m-%d'))
 
     os.chdir(anykernel3_dir)

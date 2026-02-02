@@ -48,14 +48,14 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@main
         with:
-          name: AOSP_${{ matrix.target }}_${{ steps.date.outputs.date }}
-          path: AOSP_${{ matrix.target }}_${{ steps.date.outputs.date }}.zip
+          name: AOSP_${{ matrix.target }}_${{ steps.date.outputs.date }}_SUSFS
+          path: AOSP_${{ matrix.target }}_${{ steps.date.outputs.date }}_SUSFS.zip
           if-no-files-found: error
 
       - name: Upload Logs
         if: failure()
         uses: actions/upload-artifact@main
         with:
-          name: AOSP_${{ matrix.target }}_${{ steps.date.outputs.date }}-LOG
+          name: AOSP_${{ matrix.target }}_${{ steps.date.outputs.date }}_SUSFS-LOG
           path: "*.log"
           if-no-files-found: warn

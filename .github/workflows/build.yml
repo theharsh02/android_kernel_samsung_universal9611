@@ -11,7 +11,7 @@ jobs:
       CLANG_URL: https://github.com/XSans0/WeebX-Clang/releases/download/WeebX-Clang-19.1.5-release/WeebX-Clang-19.1.5.tar.gz
     strategy:
       matrix:
-        target: [a51, f41, m31, m31s, m21, gta4xl, gta4xlwifi]
+        target: [a51]
 
     name: "Build for ${{matrix.target}}"
     steps:

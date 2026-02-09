@@ -1,8 +1,8 @@
 diff --git a/kernel/Kbuild b/kernel/Kbuild
-index de54c3cd..5a1801b2 100644
+index 7cf47b30..f0c2775e 100644
 --- a/kernel/Kbuild
 +++ b/kernel/Kbuild
-@@ -263,4 +263,14 @@ ccflags-y += -DEXPECTED_MANAGER_HASH=\"$(KSU_NEXT_MANAGER_HASH)\"
+@@ -261,4 +261,14 @@ ccflags-y += -DEXPECTED_MANAGER_HASH=\"$(KSU_NEXT_MANAGER_HASH)\"
  ccflags-y += -Wno-strict-prototypes -Wno-int-conversion -Wno-gcc-compat -Wno-missing-prototypes
  ccflags-y += -Wno-declaration-after-statement -Wno-unused-function -Wno-unused-variable
  
@@ -485,7 +485,7 @@ index 49915092..f9e26a12 100644
      return 0;
  }
 diff --git a/kernel/supercalls.c b/kernel/supercalls.c
-index c7eb13f8..77290b31 100644
+index d6d66591..15b28ebb 100644
 --- a/kernel/supercalls.c
 +++ b/kernel/supercalls.c
 @@ -12,6 +12,11 @@
@@ -727,7 +727,7 @@ index c7eb13f8..77290b31 100644
  	int rc = register_kprobe(&reboot_kp);
  	if (rc) {
  		pr_err("reboot kprobe failed: %d\n", rc);
-@@ -889,9 +1018,11 @@ void ksu_supercalls_init(void)
+@@ -888,9 +1017,11 @@ void ksu_supercalls_init(void)
  }
  
  void ksu_supercalls_exit(void){
@@ -742,5 +742,4 @@ index c7eb13f8..77290b31 100644
  
  // IOCTL dispatcher
 -- 
-2.52.0
-
+2.53.0

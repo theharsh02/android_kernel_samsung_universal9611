@@ -203,9 +203,6 @@ obj-$(CONFIG_SEC_EXT)           += samsung/
 # Sensor Hub
 obj-$(CONFIG_SENSORS_SSP) += sensorhub/
 
-# uH
-obj-$(CONFIG_UH)		+= uh/
-
 # vibrator
 obj-y				+= vibrator/
 

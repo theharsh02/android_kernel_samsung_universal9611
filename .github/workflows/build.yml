@@ -41,11 +41,8 @@ jobs:
 
       - name: Apply KernelSU Next SUSFS patch
         run: |
-          cd Patches
-          cp * ../KernelSU-Next/
-          cd ..
-          cd KernelSU-Next/
-          patch -p1 < ksun-susfs-2.0.0.patch
+          cd KernelSU-Next
+          python3 ../Patches/apply_susfs.py
 
       - name: Build kernel
         run: |

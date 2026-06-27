@@ -459,27 +459,19 @@ def patch_dispatch_c():
     if 'susfs_start_sdcard_monitor_fn' in c:
         print(f"  skip (already patched): {p}"); return
 
-    # Add include
+    # Add include — struct kstat forward-decl avoids -Wvisibility from susfs.h:194
     m = '#include <linux/string.h>'
     if m in c:
         c = c.replace(m,
-            '#ifdef CONFIG_KSU_SUSFS\n#include <linux/susfs.h>\n#endif\n' + m, 1)
+            '#ifdef CONFIG_KSU_SUSFS\nstruct kstat;\n#include <linux/susfs.h>\n#endif\n' + m, 1)
 
     # Add sdcard monitor after on_boot_completed()
     m = 'on_boot_completed();'
     require(p, c, m)
     c = c.replace(m, m + SUSFS_DISPATCH_CMDS, 1)
 
-    # Fix do_manage_mark guard — try several indent styles
-    for old, new in [
-        ('#ifdef KSU_KPROBES_HOOK\n\tstruct ksu_manage_mark_cmd cmd;',
-         '#if defined(KSU_KPROBES_HOOK) || defined(CONFIG_KSU_SUSFS)\n\tstruct ksu_manage_mark_cmd cmd;'),
-        ('#ifdef KSU_KPROBES_HOOK\n    struct ksu_manage_mark_cmd cmd;',
-         '#if defined(KSU_KPROBES_HOOK) || defined(CONFIG_KSU_SUSFS)\n    struct ksu_manage_mark_cmd cmd;'),
-    ]:
-        if old in c:
-            c = c.replace(old, new, 1)
-            break
+    # do_manage_mark guard is intentionally NOT changed — ksu_get_task_mark etc.
+    # only exist with KSU_KPROBES_HOOK; SUSFS uses reboot syscall path instead.
 
     write(p, c); done(p)
 
@@ -534,12 +526,13 @@ def patch_supercall_c():
     if 'susfs_is_boot_completed_triggered' in c:
         print(f"  skip (already patched): {p}"); return
 
-    # Add includes
+    # Add includes — struct kstat forward-decl avoids -Wvisibility from susfs.h:194
     m = '#include "uapi/supercall.h"'
     require(p, c, m)
     c = c.replace(m,
         '#ifdef CONFIG_KSU_SUSFS\n'
         '#include <linux/namei.h>\n'
+        'struct kstat;\n'
         '#include <linux/susfs.h>\n'
         '#include "selinux/objsec.h"\n'
         '#endif\n' + m, 1)
